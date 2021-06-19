@@ -12,12 +12,14 @@ env:
   CLUSTER_NAME: DiAmuz
   CLUSTER_RESOURCE_GROUP: development
   NAMESPACE: ksqldb
-  
+ 
+ 
 jobs:
 
   deploy:
     
     # Set the target Azure Kubernetes Service (AKS) cluster. 
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
     - uses: azure/aks-set-context@v1
