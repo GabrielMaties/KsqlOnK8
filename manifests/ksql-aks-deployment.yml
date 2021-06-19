@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: cp-ksql-server
-  namespace: ksqldb
+  namespace: ksqldb1
   labels:
     app: cp-ksql-server
 spec:
