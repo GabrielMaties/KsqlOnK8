@@ -11,7 +11,7 @@ on:
 env:
   CLUSTER_NAME: DiAmuz
   CLUSTER_RESOURCE_GROUP: development
-  NAMESPACE: ksqldb
+  NAMESPACE: ksqldb1
  
  
 jobs:
