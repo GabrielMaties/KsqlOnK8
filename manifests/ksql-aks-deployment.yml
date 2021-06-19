@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: cp-ksql-server
-  namespace: ${kubernetes_namespace}
+  namespace: ${{ env.NAMESPACE }}
   labels:
     app: cp-ksql-server
 spec:
