@@ -1,0 +1,99 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cp-ksql-server
+  namespace: ${kubernetes_namespace}
+  labels:
+    app: cp-ksql-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: cp-ksql-server
+      app: cp-ksql-server
+  template:
+    metadata:
+      labels:
+        name: cp-ksql-server
+        app: cp-ksql-server
+    spec:
+      hostname: cp-ksql-server
+      containers:
+        - name: cp-ksql-server
+          image: "confluentinc/cp-ksqldb-server:6.1.1"
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - containerPort: 8088
+          resources:
+            limits:
+              cpu: "4"
+              memory: 16Gi
+            requests:
+              cpu: "2"
+              memory: 8Gi
+
+          volumeMounts:
+          env:
+
+          # Service ID
+          # Service ID
+          - name: KSQL_SERVICE_ID
+            value: "cp-kafka-server-local"
+          # Boot strap server details
+          - name: KSQL_BOOTSTRAP_SERVERS
+            value: "pkc-epwny.eastus.azure.confluent.cloud:9092"
+          - name: "KSQL_SECURITY_PROTOCOL"
+            value: "SASL_SSL"
+          - name: "KSQL_SASL_JAAS_CONFIG"
+            value: "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"YMUPQYURISCH6C3O\" password=\"30aC5f9Topnxjr/UPUYuew+9e8OZI4nlaQbxQk7ksUBb95Y5NcxAXUphOesv2sdd\";"
+          - name: "KSQL_SSL_ENDPOINT_IDENTIFICATION_ALGORITHM"
+            value: "https"
+          - name: "KSQL_SASL_MECHANISM"
+            value: "PLAIN"
+          # Schema Registry details
+          - name: "KSQL_SCHEMA_REGISTRY_URL"
+            value: "https://psrc-j39np.westeurope.azure.confluent.cloud"
+          - name: "KSQL_BASIC_AUTH_CREDENTIALS_SOURCE"
+            value: "USER_INFO"
+          - name: "KSQL_SCHEMA_REGISTRY_BASIC_AUTH_USER_INFO"
+            value: "J2CHCZTQDHS2FJOI:nALjNSNXmS9T1Fcl9K2ziFxvyJBkKEFTRpCuaZi7Nx5cO0UsldEIj34F2DApKPWc"
+          # Not sure about the right entries if KSQL_KSQL so specifying both
+          - name: "KSQL_KSQL_SCHEMA_REGISTRY_URL"
+            value: "https://psrc-j39np.westeurope.azure.confluent.cloud"
+          - name: "KSQL_KSQL_SCHEMA_REGISTRY_BASIC_AUTH_CREDENTIALS_SOURCE"
+            value: "USER_INFO"
+          - name: "KSQL_KSQL_SCHEMA_REGISTRY_BASIC_AUTH_USER_INFO"
+            value: "J2CHCZTQDHS2FJOI:nALjNSNXmS9T1Fcl9K2ziFxvyJBkKEFTRpCuaZi7Nx5cO0UsldEIj34F2DApKPWc"
+
+          # Connect url
+          # - name: "KSQL_KSQL_CONNECT_URL"
+          #   value: "http://connect:8083"
+          # KSQL Networking and host name
+          - name: "KSQL_HOST_NAME"
+            value: "cp-ksql-server"
+          - name: "KSQL_LISTENERS"
+            value: "http://0.0.0.0:8088"
+          # KSQL specific
+          - name: "KSQL_CACHE_MAX_BYTES_BUFFERING"
+            value: "0"
+          - name: "KSQL_CONFIG_DIR"
+            value: "/etc/ksql"
+          - name: "KSQL_KSQL_SINK_REPLICAS"
+            value: "3"
+          - name: "KSQL_KSQL_STREAMS_PRODUCER_RETRIES"
+            value: "2147483647"
+          - name: "KSQL_KSQL_STREAMS_REPLICATION_FACTOR"
+            value: "3"
+          - name: "KSQL_KSQL_LOGGING_PROCESSING_STREAM_AUTO_CREATE"
+            value: "true"
+          - name: "KSQL_KSQL_LOGGING_PROCESSING_TOPIC_AUTO_CREATE"
+            value: "true"
+          - name: "KSQL_KSQL_INTERNAL_TOPIC_REPLICAS"
+            value: "3"
+          - name: "KSQL_KSQL_LOGGING_PROCESSING_TOPIC_REPLICATION_FACTOR"
+            value: "3"
+          # Interceptors
+          - name: "KSQL_PRODUCER_INTERCEPTOR_CLASSES"
+            value: "io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor"
+          - name: "KSQL_CONSUMER_INTERCEPTOR_CLASSES"
+            value: "io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor"
