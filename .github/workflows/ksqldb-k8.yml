@@ -10,8 +10,8 @@ on:
 
 env:
   CLUSTER_NAME: DiAmuz
-  CLUSTER_RESOURCE_GROUP: development
-  NAMESPACE: ksqldb1
+  CLUSTER_RESOURCE_GROUP: k8-rg
+  NAMESPACE: ksqldb
  
  
 jobs:
